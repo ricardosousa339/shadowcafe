@@ -1,4 +1,4 @@
 WIDTH = 800
-HEIGHT = 600
-TITLE = "Meu Jogo"
+HEIGHT = 800
+TITLE = "Cafe"
 BLACK = (0, 0, 0)
