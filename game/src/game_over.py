@@ -5,14 +5,14 @@ class GameOverScreen:
         self.screen = screen
         self.width = width
         self.height = height
-        self.font = pygame.font.Font("game/assets/fonts/goblin.otf", 14)
-        self.font2 = pygame.font.Font("game/assets/fonts/homevideo.ttf", 50)
+        self.font = pygame.font.Font("game/src/assets/fonts/goblin.otf", 14)
+        self.font2 = pygame.font.Font("game/src/assets/fonts/homevideo.ttf", 50)
         
         mensagem_1 = ""
         mensagem_2 = "☕"
         mensagem_3 = ""
-        mensagem_4 = "Grãos de Café: {}".format(cafe)
-        mensagem_5 = "Torrões de Açúcar: {}".format(acucar)
+        mensagem_4 = "CAFÉ       - {}".format(cafe)
+        mensagem_5 = "AÇÚCAR  - {}".format(acucar)
         
         
         if acucar > cafe:
@@ -31,11 +31,19 @@ class GameOverScreen:
         self.text4 = self.font.render(mensagem_4, True, (255, 255, 255))
         self.text5 = self.font.render(mensagem_5, True, (255, 255, 255))
         
-        self.image = pygame.image.load('game/assets/game_over/lightcafe.png').convert_alpha()
+        skin = "game/src/assets/game_over/lightcafe.png"
+        if acucar > cafe:
+            skin = "game/src/assets/game_over/cafedoce.png"
+        elif cafe > acucar:
+            skin = "game/src/assets/game_over/cafeforte.png"
+        
+        self.image = pygame.image.load(skin).convert_alpha()
+        
+        
         self.image = pygame.transform.scale(self.image, (200, 200))  # Redimensionar a imagem para caber na tela
         
-        self.button_font = pygame.font.Font("game/assets/fonts/goblin.otf", 20)
-        self.button_text = self.font2.render("▶️ Reiniciar", True, (255, 255, 255))
+        self.button_font = pygame.font.Font("game/src/assets/fonts/homevideo.ttf", 30)       
+        self.button_text = self.button_font.render("▶️ Reiniciar", True, (255, 255, 255))
         self.button_padding = 20
         self.button_rect = pygame.Rect(
             self.width // 2 - self.button_text.get_width() // 2 - self.button_padding,

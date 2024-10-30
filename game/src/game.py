@@ -31,7 +31,7 @@ class Game:
         self.falling_objects = []
         self.spawn_timer = 0
 
-        self.collision_sound = pygame.mixer.Sound('game/assets/audio/drop.mp3')
+        self.collision_sound = pygame.mixer.Sound('game/src/assets/audio/drop.ogg')
 
 
     def run(self):
@@ -49,6 +49,7 @@ class Game:
         if game_over_screen.show():
             self.__init__()  # Reiniciar o jogo
             self.run()
+        
 
     def events(self):
         for event in pygame.event.get():

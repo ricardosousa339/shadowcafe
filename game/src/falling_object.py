@@ -10,8 +10,8 @@ class FallingObject:
         
                         # Dicionário de fundos
         skins = {
-            "torrao": "game/assets/torraodeacucar.png",
-            "grao": "game/assets/graodecafe.png"
+            "torrao": "game/src/assets/torraodeacucar.png",
+            "grao": "game/src/assets/graodecafe.png"
         }
         
         self.skins = {name: pygame.transform.scale(pygame.image.load(path).convert_alpha(), (width, height)) for name, path in skins.items()}

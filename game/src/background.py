@@ -5,11 +5,11 @@ class Background:
         
                 # Dicionário de fundos
         backgrounds = {
-            "cafeteria_4": "game/assets/cafeteria/imagem_4luzes.png",
-            "cafeteria_3": "game/assets/cafeteria/imagem_3luzes.png",
-            "cafeteria_2": "game/assets/cafeteria/imagem_2luzes.png",
-            "cafeteria_1": "game/assets/cafeteria/imagem_1luz.png",
-            "cafeteria_0": "game/assets/cafeteria/imagem_normal.png",
+            "cafeteria_4": "game/src/assets/cafeteria/imagem_4luzes.png",
+            "cafeteria_3": "game/src/assets/cafeteria/imagem_3luzes.png",
+            "cafeteria_2": "game/src/assets/cafeteria/imagem_2luzes.png",
+            "cafeteria_1": "game/src/assets/cafeteria/imagem_1luz.png",
+            "cafeteria_0": "game/src/assets/cafeteria/imagem_normal.png",
         }
         self.backgrounds = {name: pygame.transform.scale(pygame.image.load(path).convert(), (width, height)) for name, path in backgrounds.items()}
 

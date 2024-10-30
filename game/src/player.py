@@ -9,9 +9,9 @@ class Player:
         self.y = float(y)
         
         skins = {
-            "xicara_marrom": "game/assets/xicara/xicara_marrom.png",
-            "xicara_escura": "game/assets/xicara/xicara_escura.png",
-            "xicara_clara": "game/assets/xicara/xicara_clara.png",
+            "xicara_marrom": "game/src/assets/xicara/xicara_marrom.png",
+            "xicara_escura": "game/src/assets/xicara/xicara_escura.png",
+            "xicara_clara": "game/src/assets/xicara/xicara_clara.png",
         }
         
         self.skins = {name: pygame.transform.scale(pygame.image.load(path).convert_alpha(), (180, 130)) for name, path in skins.items()}

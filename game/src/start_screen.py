@@ -1,18 +1,19 @@
 import pygame
 
 from settings import TITLE
+from credits import CreditsScreen  # Import the CreditsScreen class
 
 class StartScreen:
     def __init__(self, screen, width, height):
         self.screen = screen
         self.width = width
         self.height = height
-        self.font = pygame.font.Font("game/assets/fonts/goblin.otf", 50)
-        self.font2 = pygame.font.Font("game/assets/fonts/homevideo.ttf", 50)
+        self.font = pygame.font.Font("game/src/assets/fonts/goblin.otf", 50)
+        self.font2 = pygame.font.Font("game/src/assets/fonts/homevideo.ttf", 50)
 
-        self.button_font = pygame.font.Font("game/assets/fonts/goblin.otf", 20)
+        self.button_font = pygame.font.Font("game/src/assets/fonts/goblin.otf", 20)
         
-        self.image = pygame.image.load('game/assets/game_over/lightcafe.png').convert_alpha()
+        self.image = pygame.image.load('game/src/assets/game_over/lightcafe.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (400, 400))  # Redimensionar a imagem para caber na tela
         
         
@@ -26,8 +27,12 @@ class StartScreen:
             self.button_text.get_height() + 2 * self.button_padding
         )
         self.button_credits = self.button_font.render("Créditos", True, (255, 255, 255))
-        
-        
+        self.button_credits_rect = pygame.Rect(
+            self.width // 2 - self.button_credits.get_width() // 2 - self.button_padding,
+            self.height // 2 + 200,
+            self.button_credits.get_width() + 2 * self.button_padding,
+            self.button_credits.get_height() + 2 * self.button_padding
+        )
         
     def show(self):
         self.screen.fill((6, 2, 37))
@@ -41,25 +46,28 @@ class StartScreen:
         button_text_y = self.button_rect.y + (self.button_rect.height - self.button_text.get_height()) // 2
         self.screen.blit(self.button_text, (button_text_x, button_text_y))
         
-        button_credits_x = self.button_rect.x + (self.button_rect.width - self.button_credits.get_width()) // 2
-        button_credits_y = self.button_rect.y + (self.button_rect.height - self.button_credits.get_height()) // 2 + 50
+        pygame.draw.rect(self.screen, (6, 2, 37), self.button_credits_rect)
+        button_credits_x = self.button_credits_rect.x + (self.button_credits_rect.width - self.button_credits.get_width()) // 2
+        button_credits_y = self.button_credits_rect.y + (self.button_credits_rect.height - self.button_credits.get_height()) // 2
         
-        self.screen.blit(self.button_credits, (button_credits_x, button_credits_y + 50))
+        self.screen.blit(self.button_credits, (button_credits_x, button_credits_y))
         
         pygame.display.flip()
 
-        # Loop para manter a tela de início até ser fechada
         start = True
         while start:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     start = False
-                    return False  # Indica que o jogo deve ser encerrado
+                    return False 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.button_rect.collidepoint(event.pos):
                         start = False
-                        return True  # Indica que o jogo deve ser iniciado
+                        return True 
+                    elif self.button_credits_rect.collidepoint(event.pos):
+                        credits_screen = CreditsScreen(self.screen, self.width, self.height)
+                        credits_screen.run()
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:  # Pressionar Enter para iniciar o jogo
+                    if event.key == pygame.K_RETURN: 
                         start = False
-                        return True  # Indica que o jogo deve ser iniciado
+                        return True
