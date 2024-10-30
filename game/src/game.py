@@ -1,19 +1,24 @@
+import os
 import random
 import pygame
 from falling_object import FallingObject
 from game_over import GameOverScreen
+from start_screen import StartScreen
 from settings import INITIAL_SPEED, WIDTH, HEIGHT, TITLE
 from player import Player
 from background import Background
 
 class Game:
     def __init__(self):
+        os.environ['SDL_AUDIODRIVER'] = 'pulse'
+
         pygame.init()
+        pygame.mixer.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         self.running = True
-        self.player = Player(300, 550)  # Posição inicial do jogador
+        self.player = Player(300, 550, 0) 
         self.background = Background(WIDTH, HEIGHT)
         self.qtd_cafe = 0
         self.qtd_acucar = 0
@@ -26,14 +31,21 @@ class Game:
         self.falling_objects = []
         self.spawn_timer = 0
 
+        self.collision_sound = pygame.mixer.Sound('game/assets/audio/drop.mp3')
+
 
     def run(self):
+        
+        start_screen = StartScreen(self.screen, WIDTH, HEIGHT)
+        if not start_screen.show():
+            return
+
         while self.running:
             self.events()
             self.update()
             self.draw()
             
-        game_over_screen = GameOverScreen(self.screen, WIDTH, HEIGHT)
+        game_over_screen = GameOverScreen(self.screen, WIDTH, HEIGHT, self.qtd_acucar, self.qtd_cafe)
         if game_over_screen.show():
             self.__init__()  # Reiniciar o jogo
             self.run()
@@ -54,27 +66,41 @@ class Game:
         object_skin = random.randint(0, 1)
         
         speed = INITIAL_SPEED
+        fo_width = 0
+        fo_height = 0
+        
+        if object_skin == 0:
+            fo_width = 40
+            fo_height = 40
+        elif object_skin == 1:
+            fo_width = 30
+            fo_height = 40
         
         
         if self.spawn_timer > 1000: 
             self.spawn_timer = 0
-            x = random.randint(0, WIDTH - 50)
+            x = random.randint(100, WIDTH - 100)
             speed += 0.05
-            self.falling_objects.append(FallingObject(30,40,x, 0, speed, object_skin))
+            self.falling_objects.append(FallingObject(fo_width, fo_height, x, 0, speed, object_skin))
 
         for obj in self.falling_objects:
             obj.update()
             if obj.rect.colliderect(self.player.rect):
+                self.collision_sound.play()
+
                 self.falling_objects.remove(obj)
                 if obj.current_skin == "grao":
                     self.qtd_cafe += 1
+                    self.player.escurecer()
                 elif obj.current_skin == "torrao":
                     self.qtd_acucar += 1
+                    self.player.clarear()
             
             if obj.rect.y >= HEIGHT  - 200:
                 self.falling_objects.remove(obj)
                 self.strikes += 1
                 self.flash_timer = self.flash_duration
+                self.player.marrom()
 
             if self.strikes == 1 and not self.strike_flags[0]:
                 self.background.set_background("cafeteria_3")
@@ -93,12 +119,12 @@ class Game:
                 self.strike_flags[3] = True
                 self.running = False
 
-        self.falling_objects = [obj for obj in self.falling_objects if obj.rect.y < HEIGHT - 200]
+        # self.falling_objects = [obj for obj in self.falling_objects if obj.rect.y < HEIGHT - 200]
 
 
     def draw(self):
         self.background.draw(self.screen)
-        self.screen.blit(self.player.image, self.player.rect) 
+        self.player.draw(self.screen)
         for obj in self.falling_objects:
             obj.draw(self.screen)
                     # Aplicar camada semi-transparente para diminuir o brilho
