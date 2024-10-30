@@ -2,3 +2,4 @@ WIDTH = 800
 HEIGHT = 800
 TITLE = "Cafe"
 BLACK = (0, 0, 0)
+INITIAL_SPEED = 0.5
