@@ -1,4 +1,5 @@
 import pygame
+from game.src.utils import get_asset_path
 
 class FallingObject:
     def __init__(self, width, height, x: float, y: float, speed: float, skin: int):
@@ -8,10 +9,10 @@ class FallingObject:
         self.x = x
         self.y = y
         
-                        # Dicionário de fundos
+        # Dicionário de fundos
         skins = {
-            "torrao": "game/src/assets/torraodeacucar.png",
-            "grao": "game/src/assets/graodecafe.png"
+            "torrao": get_asset_path("torraodeacucar.png"),
+            "grao": get_asset_path("graodecafe.png")
         }
         
         self.skins = {name: pygame.transform.scale(pygame.image.load(path).convert_alpha(), (width, height)) for name, path in skins.items()}

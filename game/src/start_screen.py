@@ -1,8 +1,9 @@
 import pygame
-import time  # Import time module
+import time  
 
-from settings import TITLE
-from credits import CreditsScreen  # Import the CreditsScreen class
+from game.src.settings import TITLE
+from game.src.credits import CreditsScreen
+from game.src.utils import get_asset_path  # Import the get_asset_path method
 
 class StartScreen:
     def __init__(self, screen, width, height):
@@ -10,14 +11,13 @@ class StartScreen:
         self.screen = screen
         self.width = width
         self.height = height
-        self.font = pygame.font.Font("game/src/assets/fonts/goblin.otf", 50)
-        self.font2 = pygame.font.Font("game/src/assets/fonts/homevideo.ttf", 50)
+        self.font = pygame.font.Font(get_asset_path("goblin.otf"), 50)
+        self.font2 = pygame.font.Font(get_asset_path("homevideo.ttf"), 50)
 
-        self.button_font = pygame.font.Font("game/src/assets/fonts/goblin.otf", 20)
+        self.button_font = pygame.font.Font(get_asset_path("goblin.otf"), 20)
         
-        self.image = pygame.image.load('game/src/assets/game_over/lightcafe.png').convert_alpha()
+        self.image = pygame.image.load(get_asset_path('lightcafe.png')).convert_alpha()
         self.image = pygame.transform.scale(self.image, (400, 400))  # Redimensionar a imagem para caber na tela
-        
         
         self.title_text = self.font.render(TITLE, True, (255, 255, 255))
         self.button_text = self.font2.render("▶️ Iniciar", True, (255, 255, 255))
@@ -35,12 +35,12 @@ class StartScreen:
             self.button_credits.get_width() + 2 * self.button_padding,
             self.button_credits.get_height() + 2 * self.button_padding
         )
-        self.blink_font = pygame.font.Font("game/src/assets/fonts/homevideo.ttf", 30)
+        self.blink_font = pygame.font.Font(get_asset_path("homevideo.ttf"), 30)
         self.blink_text = self.blink_font.render("Pressione enter para pular", True, (255, 255, 255))
         self.blink_rect = self.blink_text.get_rect(center=(self.width // 2, self.height - 50))
         
     def show_info(self):
-        info_font = pygame.font.Font("game/src/assets/fonts/homevideo.ttf", 23)
+        info_font = pygame.font.Font(get_asset_path("homevideo.ttf"), 23)
         lines1 = [
             "Bem vindo ao Light Café!",
             "A escuridão avança e a sua única defesa é um cafezinho.",

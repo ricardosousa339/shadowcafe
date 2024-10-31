@@ -1,13 +1,13 @@
 import pygame
+from game.src.utils import get_asset_path
 
 class GameOverScreen:
     def __init__(self, screen, width, height, acucar, cafe):
         self.screen = screen
         self.width = width
         self.height = height
-        self.font = pygame.font.Font("game/src/assets/fonts/goblin.otf", 14)
-        self.font2 = pygame.font.Font("game/src/assets/fonts/homevideo.ttf", 50)
-        
+        self.font = pygame.font.Font(get_asset_path("goblin.otf"), 14)
+        self.font2 = pygame.font.Font(get_asset_path("homevideo.ttf"), 50)
         mensagem_1 = ""
         mensagem_2 = "☕"
         mensagem_3 = ""
@@ -31,18 +31,18 @@ class GameOverScreen:
         self.text4 = self.font.render(mensagem_4, True, (255, 255, 255))
         self.text5 = self.font.render(mensagem_5, True, (255, 255, 255))
         
-        skin = "game/src/assets/game_over/lightcafe.png"
+        skin = get_asset_path("lightcafe.png")
         if acucar > cafe:
-            skin = "game/src/assets/game_over/cafedoce.png"
+            skin = get_asset_path("cafedoce.png")
         elif cafe > acucar:
-            skin = "game/src/assets/game_over/cafeforte.png"
+            skin = get_asset_path("cafeforte.png")
         
         self.image = pygame.image.load(skin).convert_alpha()
         
         
         self.image = pygame.transform.scale(self.image, (200, 200))  # Redimensionar a imagem para caber na tela
         
-        self.button_font = pygame.font.Font("game/src/assets/fonts/homevideo.ttf", 30)       
+        self.button_font = pygame.font.Font(get_asset_path("homevideo.ttf"), 30)
         self.button_text = self.button_font.render("▶️ Reiniciar", True, (255, 255, 255))
         self.button_padding = 20
         self.button_rect = pygame.Rect(

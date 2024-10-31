@@ -1,12 +1,15 @@
 import os
 import random
 import pygame
-from falling_object import FallingObject
-from game_over import GameOverScreen
-from start_screen import StartScreen
-from settings import INITIAL_SPEED, WIDTH, HEIGHT, TITLE
-from player import Player
-from background import Background
+from game.src.falling_object import FallingObject
+from game.src.game_over import GameOverScreen
+from game.src.start_screen import StartScreen
+from game.src.settings import INITIAL_SPEED, WIDTH, HEIGHT, TITLE
+from game.src.player import Player
+from game.src.background import Background
+from game.src.utils import get_asset_path
+
+
 
 class Game:
     def __init__(self):
@@ -31,7 +34,7 @@ class Game:
         self.falling_objects = []
         self.spawn_timer = 0
 
-        self.collision_sound = pygame.mixer.Sound('game/src/assets/audio/drop.ogg')
+        self.collision_sound = pygame.mixer.Sound(get_asset_path('drop.ogg'))
 
 
     def run(self):

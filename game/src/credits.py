@@ -1,5 +1,5 @@
 import pygame
-
+from game.src.utils import get_asset_path
 
 # Initialize Pygame
 pygame.init()
@@ -38,7 +38,7 @@ credits = [
 class CreditsScreen:
     def __init__(self, screen, width, height):
         self.screen = screen
-        self.font = pygame.font.Font("game/src/assets/fonts/goblin.otf", 10)
+        self.font = pygame.font.Font(get_asset_path("goblin.otf"), 10)
         self.width = width
         self.height = height
         self.scroll_y = height
@@ -52,13 +52,15 @@ class CreditsScreen:
         surface.blit(textobj, textrect)
 
     def run(self):
-        while True:
+        running = True
+
+        while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    from start_screen import StartScreen
-                    start_screen = StartScreen(self.screen, WIDTH, HEIGHT)
-                    if not start_screen.show():
-                        return
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
 
             self.screen.fill(BLACK)
 
@@ -71,3 +73,9 @@ class CreditsScreen:
 
             pygame.display.flip()
             self.clock.tick(60)
+
+        from game.src.start_screen import StartScreen
+        start_screen = StartScreen(self.screen, WIDTH, HEIGHT)
+        start_screen.show()
+
+        return
