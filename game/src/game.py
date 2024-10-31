@@ -33,6 +33,8 @@ class Game:
         self.flash_duration = 10
         self.falling_objects = []
         self.spawn_timer = 0
+        self.speed = INITIAL_SPEED
+        self.collision_sound = pygame.mixer.Sound('game/src/assets/audio/drop.ogg')
 
         self.collision_sound = pygame.mixer.Sound(get_asset_path('drop.ogg'))
 
@@ -69,7 +71,7 @@ class Game:
         self.spawn_timer += 1
         object_skin = random.randint(0, 1)
         
-        speed = INITIAL_SPEED
+        
         fo_width = 0
         fo_height = 0
         
@@ -84,8 +86,9 @@ class Game:
         if self.spawn_timer > 1000: 
             self.spawn_timer = 0
             x = random.randint(100, WIDTH - 100)
-            speed += 0.05
-            self.falling_objects.append(FallingObject(fo_width, fo_height, x, 0, speed, object_skin))
+            self.speed += 0.008
+            print(self.speed)
+            self.falling_objects.append(FallingObject(fo_width, fo_height, x, 0, self.speed, object_skin))
 
         for obj in self.falling_objects:
             obj.update()
