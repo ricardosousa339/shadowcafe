@@ -52,13 +52,15 @@ class CreditsScreen:
         surface.blit(textobj, textrect)
 
     def run(self):
-        while True:
+        running = True
+
+        while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    from start_screen import StartScreen
-                    start_screen = StartScreen(self.screen, WIDTH, HEIGHT)
-                    if not start_screen.show():
-                        return
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
 
             self.screen.fill(BLACK)
 
@@ -71,3 +73,9 @@ class CreditsScreen:
 
             pygame.display.flip()
             self.clock.tick(60)
+
+        from start_screen import StartScreen
+        start_screen = StartScreen(self.screen, WIDTH, HEIGHT)
+        start_screen.show()
+
+        return
