@@ -1,6 +1,7 @@
 import pygame
 
-from settings import HEIGHT, WIDTH
+from game.src.settings import HEIGHT, WIDTH
+from game.src.utils import get_asset_path
 
 class Player:
     def __init__(self, x, y, skin):
@@ -9,19 +10,18 @@ class Player:
         self.y = float(y)
         
         skins = {
-            "xicara_marrom": "game/src/assets/xicara/xicara_marrom.png",
-            "xicara_escura": "game/src/assets/xicara/xicara_escura.png",
-            "xicara_clara": "game/src/assets/xicara/xicara_clara.png",
+            "xicara_marrom": get_asset_path("xicara_marrom.png"),
+            "xicara_escura": get_asset_path("xicara_escura.png"),
+            "xicara_clara": get_asset_path("xicara_clara.png"),
         }
         
         self.skins = {name: pygame.transform.scale(pygame.image.load(path).convert_alpha(), (180, 130)) for name, path in skins.items()}
         self.current_skin = list(self.skins.keys())[skin] 
-        self.rect =  self.skins[self.current_skin].get_rect(topleft=(200, y))
-        
+        self.rect = self.skins[self.current_skin].get_rect(topleft=(200, y))
 
     def update(self):
         keys = pygame.key.get_pressed()
-        move_speed = 0.7
+        move_speed = 2
         if keys[pygame.K_LEFT]:
             self.x -= move_speed
         if keys[pygame.K_RIGHT]:

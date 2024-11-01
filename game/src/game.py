@@ -1,12 +1,15 @@
 import os
 import random
 import pygame
-from falling_object import FallingObject
-from game_over import GameOverScreen
-from start_screen import StartScreen
-from settings import INITIAL_SPEED, WIDTH, HEIGHT, TITLE
-from player import Player
-from background import Background
+from game.src.falling_object import FallingObject
+from game.src.game_over import GameOverScreen
+from game.src.start_screen import StartScreen
+from game.src.settings import INITIAL_SPEED, WIDTH, HEIGHT, TITLE
+from game.src.player import Player
+from game.src.background import Background
+from game.src.utils import get_asset_path
+
+
 
 class Game:
     def __init__(self):
@@ -24,14 +27,16 @@ class Game:
         self.qtd_acucar = 0
         self.strikes = 0
         self.strike_flags = [False, False, False, False]
+        self.max_timer = 1000
         
         
         self.flash_timer = 0
         self.flash_duration = 10
         self.falling_objects = []
         self.spawn_timer = 0
+        self.speed = INITIAL_SPEED
 
-        self.collision_sound = pygame.mixer.Sound('game/src/assets/audio/drop.ogg')
+        self.collision_sound = pygame.mixer.Sound(get_asset_path('drop.ogg'))
 
 
     def run(self):
@@ -66,7 +71,7 @@ class Game:
         self.spawn_timer += 1
         object_skin = random.randint(0, 1)
         
-        speed = INITIAL_SPEED
+        
         fo_width = 0
         fo_height = 0
         
@@ -78,11 +83,14 @@ class Game:
             fo_height = 40
         
         
-        if self.spawn_timer > 1000: 
+        if self.spawn_timer > self.max_timer: 
             self.spawn_timer = 0
+            if self.max_timer > 300:
+                self.max_timer -= 10
             x = random.randint(100, WIDTH - 100)
-            speed += 0.05
-            self.falling_objects.append(FallingObject(fo_width, fo_height, x, 0, speed, object_skin))
+            self.speed += 0.008
+            print(self.speed)
+            self.falling_objects.append(FallingObject(fo_width, fo_height, x, 0, self.speed, object_skin))
 
         for obj in self.falling_objects:
             obj.update()
